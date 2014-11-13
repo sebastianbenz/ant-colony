@@ -1,4 +1,3 @@
-
 var WIDTH  = 30;
 var HEIGHT = 30;
 

@@ -1,6 +1,3 @@
-
-var HOME_WIDTH  = 2;
-var HOME_HEIGHT  = 2;
 var OFFSET  = 10;
 
 function coordinate(value){
@@ -22,7 +19,6 @@ function drawHome(ctx, position){
     var x = coordinate(position.x);
     var y = coordinate(position.y);
     ctx.fillStyle = "green";
-    console.log(x + "-" + y );
     ctx.fillRect(x, y, OFFSET, OFFSET);
 }
 
@@ -30,7 +26,6 @@ function drawFood(ctx, position){
     var x = coordinate(position.x);
     var y = coordinate(position.y);
     ctx.fillStyle = "red";
-    console.log(x + "-" + y );
     ctx.fillRect(x, y, OFFSET, OFFSET);
 
 }

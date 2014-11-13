@@ -29,8 +29,8 @@
           <file leaf-file-name="Ant.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/Ant.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.54347825" vertical-offset="635" max-vertical-offset="1095">
-                  <caret line="59" column="22" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
+                <state vertical-scroll-proportion="0.65217394" vertical-offset="495" max-vertical-offset="1080">
+                  <caret line="53" column="4" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
                   <folding />
                 </state>
               </provider>
@@ -39,8 +39,8 @@
           <file leaf-file-name="WorldView.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/js/WorldView.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="1260">
-                  <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="315" max-vertical-offset="1185">
+                  <caret line="21" column="38" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
                   <folding />
                 </state>
               </provider>
@@ -65,8 +65,8 @@
           <file leaf-file-name="AntSpec.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/test/AntSpec.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.83932346" vertical-offset="1387" max-vertical-offset="1860">
-                  <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+                <state vertical-scroll-proportion="0.28541225" vertical-offset="1245" max-vertical-offset="2025">
+                  <caret line="92" column="30" selection-start-line="92" selection-start-column="30" selection-end-line="92" selection-end-column="30" />
                   <folding />
                 </state>
               </provider>
@@ -87,8 +87,8 @@
           <file leaf-file-name="WorldView.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/js/WorldView.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1260">
-                  <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1185">
+                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -104,8 +104,8 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/my.config.js" />
         <option value="$PROJECT_DIR$/js/WorldView.js" />
-        <option value="$PROJECT_DIR$/test/AntSpec.js" />
         <option value="$PROJECT_DIR$/js/Ant.js" />
+        <option value="$PROJECT_DIR$/test/AntSpec.js" />
       </list>
     </option>
   </component>
@@ -363,24 +363,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/WorldView.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="1260">
-          <caret line="25" column="38" selection-start-line="25" selection-start-column="38" selection-end-line="25" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/AntSpec.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.83932346" vertical-offset="1387" max-vertical-offset="1860">
-          <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1185">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Ant.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.54347825" vertical-offset="635" max-vertical-offset="1095">
-          <caret line="59" column="22" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.65217394" vertical-offset="495" max-vertical-offset="1080">
+          <caret line="53" column="4" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/AntSpec.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28541225" vertical-offset="1245" max-vertical-offset="2025">
+          <caret line="92" column="30" selection-start-line="92" selection-start-column="30" selection-end-line="92" selection-end-column="30" />
           <folding />
         </state>
       </provider>
