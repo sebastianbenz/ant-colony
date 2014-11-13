@@ -105,23 +105,25 @@ a       }
         });
     });
 
-    describe('simulator', function () {
-        describe('update', function () {
-            it("passes field with food to ant", function () {
-                var position = aPosition();
-                var ant = anAnt();
-                spyOn(ant, 'update');
-
-                var Simulator = function(world){
-                    this.world = world;
-                }
-
-
-            });
-
-
+    describe('bringing food home', function () {
+        it('returns back to food', function () {
+            var home = pos(0,0)
+            var food = pos(1,1)
+            var anyAnt = new Ant(home);
+            anyAnt.position = food
+            anyAnt.update(createFieldWithFood(1))
+            anyAnt.move(); // back home
+            anyAnt.move(); // back to food
+            expect(anyAnt.position).toEqual(food);
         });
-
+        it('starts searching again if no food is left', function () {
+            var food = pos(1,1);
+            anyAnt = antOnPosition(food);
+            anyAnt.move = anyAnt.goingToFood
+            anyAnt.positionWithFood = food;
+            anyAnt.update(emptyField());
+            expect(anyAnt.move).toBe(anyAnt.searching);
+        })
     });
 
     describe("World", function(){

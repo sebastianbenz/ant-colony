@@ -37,16 +37,19 @@ function moveAnt(ctx, prevPosition, newPosition) {
     drawAnt(ctx, newPosition);
 }
 
-function draw(ctx, ants) {
+function draw(ctx, world, ants) {
     var requestAnimationFrame =
         function(callback) {
             return setTimeout(callback, 1000);
         };
     var render = function () {
         _.each(ants, function (ant) {
-            var oldPosition = ant.position;
             ant.move();
-            moveAnt(ctx, oldPosition, ant.position);
+            world.updateAnt(ant);
+            moveAnt(ctx, ant.previousPosition, ant.position);
+        });
+        _.each(ants, function (ant) {
+            ant.update(world.field(ant.position));
         });
         requestAnimationFrame(render);
     };
@@ -61,8 +64,11 @@ function onCanvasClick(ev) {
     var x = ev.clientX - canvas.offsetLeft;
     var y = ev.clientY - canvas.offsetTop;
 
-    console.log("click: " + x + "-" + y)
-    drawFood(ctx, new Position(normalize(x), normalize(y)))
+    var position = new Position(normalize(x), normalize(y));
+    _.range(10).map(function () {
+        world.putFood(position);
+    })
+    drawFood(ctx, position)
 }
 
 function normalize(x){
@@ -79,11 +85,12 @@ drawAnt(ctx, new Position(0, 0))
 drawAnt(ctx, new Position(5, 5))
 drawFood(ctx, new Position(20, 20))
 
-var ants = _.range(20).map(function () {
+var ants = _.range(50).map(function () {
     return new Ant(home);
 })
 
-draw(ctx, ants);
+var world = new World();
+draw(ctx, world, ants);
 
 
 
