@@ -1,4 +1,6 @@
 var OFFSET  = 10;
+var ANT_COUNT = 1000;
+var FOOD_COUNT = 50;
 
 function coordinate(value){
     return value * OFFSET
@@ -12,7 +14,6 @@ function drawAnt(ctx, position){
     ctx.arc(x + 5, y + 5, 5, 0, Math.PI*2);
     ctx.closePath();
     ctx.fill();
-
 }
 
 function drawHome(ctx, position){
@@ -30,24 +31,28 @@ function drawFood(ctx, position){
 
 }
 
-function moveAnt(ctx, prevPosition, newPosition) {
+function removeAnt(ctx, prevPosition) {
     var x = coordinate(prevPosition.x);
     var y = coordinate(prevPosition.y);
     ctx.clearRect(x, y, OFFSET, OFFSET);
-    drawAnt(ctx, newPosition);
 }
 
 function draw(ctx, world, ants) {
-    var requestAnimationFrame =
-        function(callback) {
-            return setTimeout(callback, 200);
-        };
+    var requestAnimationFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+            function(callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+    })();
     var render = function () {
         _.each(ants, function (ant) {
             ant.move();
             world.moveAnt(ant);
-            if (shouldDrawAnt(ant.position) && shouldDrawAnt(ant.previousPosition)){
-                moveAnt(ctx, ant.previousPosition, ant.position);
+            if (shouldDrawAnt(ant.previousPosition)){
+                removeAnt(ctx, ant.previousPosition);
+            }
+            if (shouldDrawAnt(ant.position)){
+                drawAnt(ctx, ant.position);
             }
         });
         _.each(ants, function (ant) {
@@ -56,7 +61,7 @@ function draw(ctx, world, ants) {
         requestAnimationFrame(render);
     };
 
-    requestAnimationFrame(render, 100);
+    requestAnimationFrame(render);
 }
 
 function shouldDrawAnt(position){
@@ -73,7 +78,7 @@ function onCanvasClick(ev) {
     var y = ev.clientY - canvas.offsetTop;
 
     var position = new Position(normalize(x), normalize(y));
-    _.range(50).map(function () {
+    _.range(FOOD_COUNT).map(function () {
         world.putFood(position);
     });
     drawFood(ctx, position)
@@ -90,7 +95,7 @@ canvas.addEventListener('click', onCanvasClick, false);
 var home = new Position(WIDTH / 2  , HEIGHT / 2);
 drawHome(ctx, home);
 
-var ants = _.range(1000).map(function () {
+var ants = _.range(ANT_COUNT).map(function () {
     return new Ant(home);
 });
 
