@@ -1,11 +1,11 @@
-var WIDTH  = 30;
-var HEIGHT = 30;
+var WIDTH  = 128;
+var HEIGHT = 76;
 
 var offsets = [
     [-1, -1],[-1, 0],[-1, 1],
     [ 0, -1],        [ 0, 1],
     [ 1, -1],[ 1, 0],[ 1, 1]
-]
+];
 
 function Field(){
     this.ants = [];
@@ -14,7 +14,7 @@ function Field(){
 
 Field.prototype.takeFood = function () {
     this.food--;
-}
+};
 
 function Position(x, y){
     this.x = x;
@@ -30,18 +30,15 @@ Position.prototype.neighbours = function () {
         return position.x >= 0 && position.x <= WIDTH
             && position.y >= 0 && position.y <= HEIGHT
     });
-}
-
-
+};
 
 Position.prototype.randomNeighbour = function(){
     return _.sample(this.neighbours());
-}
-
+};
 
 function Ant(home){
-    this.position = home
-    this.home = home
+    this.position = home;
+    this.home = home;
     this.move = this.searching;
     this.update = this.inspectField;
 }
@@ -52,14 +49,14 @@ Ant.prototype.searching = function(){
 
 Ant.prototype.goingToFood = function(){
     this.updatePosition(this.position.nextTo(this.positionWithFood));
-}
+};
 
 Ant.prototype.inspectField = function(field){
     this.checkFieldForFood(field);
-    if(this.positionWithFood === undefined){
+    if(!this.positionWithFood){
         this.askAboutFood(field);
     }
-}
+};
 
 Ant.prototype.updatePosition = function (next) {
     this.previousPosition = this.position;
@@ -69,11 +66,11 @@ Ant.prototype.updatePosition = function (next) {
 Ant.prototype.takeFoodHome = function(){
     this.updatePosition(this.position.nextTo(this.home));
     if(_.isEqual(this.position, this.home)){
-        console.log("Brought food home, going to food again")
+        console.log("Brought food home, going to food again");
         this.move = this.goingToFood;
     }
 
-}
+};
 Ant.prototype.checkFieldForFood = function(field){
     if(field.food === 0){
         if(_.isEqual(this.position, this.positionWithFood)){
@@ -85,12 +82,12 @@ Ant.prototype.checkFieldForFood = function(field){
     }
     console.log("Yay! Found food!");
     field.takeFood();
-    this.positionWithFood = this.position
+    this.positionWithFood = this.position;
     this.move = this.takeFoodHome;
-}
+};
 Ant.prototype.askAboutFood = function(field){
     var antsKnowingAboutFood = _.filter(field.ants, function (ant) {
-        return ant.positionWithFood !== undefined;
+        return ant.positionWithFood;
     });
     if(antsKnowingAboutFood.length === 0){
         return;
@@ -109,38 +106,29 @@ Position.prototype.nextTo = function (dest) {
 
 };
 
-function Simulator(ants, food) {
-    this.ants = ants;
-    this.food = food;
-};
-
-Simulator.prototype.step = function () {
-    _.each(ants, move);
-};
-
 function World(){
     this.fields = []
 }
 
 World.prototype.field = function(position){
-    if(position === undefined){
-        return undefined;
+    if(!position){
+        return;
     }
-    var key = position.x + "_" + position.y
-    var field =  this.fields[key]
-    if(field === undefined) {
+    var key = position.x + "_" + position.y;
+    var field =  this.fields[key];
+    if(!field) {
         field = new Field();
         this.fields[key] = field;
     }
     return field;
-}
+};
 World.prototype.putFood = function(position){
     console.log("Food: " + position.x + "," + position.y);
     this.field(position).food++;
-}
+};
 World.prototype.updateAnt = function(ant){
     var field = this.field(ant.previousPosition);
-    if(field !== undefined){
+    if(field){
         var ants = field.ants;
         var index = ants.indexOf(ant);
         if(index > -1){
@@ -148,5 +136,5 @@ World.prototype.updateAnt = function(ant){
         }
     }
     this.field(ant.position).ants.push(ant);
-}
+};
 

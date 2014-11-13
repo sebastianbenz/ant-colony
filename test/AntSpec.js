@@ -53,7 +53,7 @@ describe("Position", function () {
 
 describe("Ant searching for food", function () {
     beforeEach(function () {
-        home = pos()
+        home = pos();
         ant = new Ant(home)
     });
 
@@ -64,25 +64,25 @@ describe("Ant searching for food", function () {
         var randomNeighbour = aPosition();
         home.randomNeighbour  = function() {
            return randomNeighbour;
-a       }
-        ant.move()
+        };
+        ant.move();
         expect(ant.position).toBe(randomNeighbour)
     });
     it('stores previous position', function () {
         var startPosition = aPosition();
         ant.position = startPosition;
-        ant.move()
+        ant.move();
         expect(ant.previousPosition).toBe(startPosition);
     });
     it('asks for food on every position', function () {
-        var positionWithoutFood = aPosition()
-        var positionWithFood = aPosition()
-        var antKnowingAboutFood = anAnt(positionWithFood)
-        var antSearchingForFood = anAnt()
-        antSearchingForFood.position = positionWithoutFood
+        var positionWithoutFood = aPosition();
+        var positionWithFood = aPosition();
+        var antKnowingAboutFood = anAnt(positionWithFood);
+        var antSearchingForFood = anAnt();
+        antSearchingForFood.position = positionWithoutFood;
         positionWithoutFood.nextTo = function(){
             return positionWithFood;
-        }
+        };
         antSearchingForFood.update(fieldWithAnt(antKnowingAboutFood));
         antSearchingForFood.move();
         expect(antSearchingForFood.position).toEqual(positionWithFood)
@@ -90,10 +90,10 @@ a       }
 
     describe('finding food', function () {
         it('returns home', function () {
-            var home = pos(0,0)
+            var home = pos(0,0);
             var anyAnt = new Ant(home);
-            anyAnt.position = pos(1,1)
-            anyAnt.update(createFieldWithFood(1))
+            anyAnt.position = pos(1,1);
+            anyAnt.update(createFieldWithFood(1));
             anyAnt.move();
             expect(anyAnt.position).toEqual(home);
         });
@@ -107,11 +107,11 @@ a       }
 
     describe('bringing food home', function () {
         it('returns back to food', function () {
-            var home = pos(0,0)
-            var food = pos(1,1)
+            var home = pos(0,0);
+            var food = pos(1,1);
             var anyAnt = new Ant(home);
-            anyAnt.position = food
-            anyAnt.update(createFieldWithFood(1))
+            anyAnt.position = food;
+            anyAnt.update(createFieldWithFood(1));
             anyAnt.move(); // back home
             anyAnt.move(); // back to food
             expect(anyAnt.position).toEqual(food);
@@ -119,7 +119,7 @@ a       }
         it('starts searching again if no food is left', function () {
             var food = pos(1,1);
             anyAnt = antOnPosition(food);
-            anyAnt.move = anyAnt.goingToFood
+            anyAnt.move = anyAnt.goingToFood;
             anyAnt.positionWithFood = food;
             anyAnt.update(emptyField());
             expect(anyAnt.move).toBe(anyAnt.searching);
@@ -134,9 +134,9 @@ a       }
 
         it("Stores food", function () {
             var position = pos(0, 0);
-            expect(world.field(position)).toEqual(emptyField())
+            expect(world.field(position)).toEqual(emptyField());
             world.putFood(position);
-            expect(world.field(position)).toEqual(createFieldWithFood(1))
+            expect(world.field(position)).toEqual(createFieldWithFood(1));
             world.putFood(position);
             expect(world.field(position)).toEqual(createFieldWithFood(2))
 
@@ -144,10 +144,10 @@ a       }
         it("Stores ants", function () {
             var position = pos(0, 0);
             expect(world.field(position)).toEqual(emptyField());
-            var anAnt = antOnPosition(position)
+            var anAnt = antOnPosition(position);
             world.updateAnt(anAnt);
             expect(world.field(position)).toEqual(fieldWithAnt(anAnt));
-            var anotherAnt = antOnPosition(position)
+            var anotherAnt = antOnPosition(position);
             world.updateAnt(anotherAnt);
             expect(world.field(position)).toEqual(fieldWithAnts(
                 [anAnt, anotherAnt]));
@@ -156,7 +156,7 @@ a       }
 
         it("Updates ants", function () {
             var firstPosition = pos(0, 0);
-            var anAnt = antOnPosition(firstPosition)
+            var anAnt = antOnPosition(firstPosition);
             //console.log(anAnt.previousPosition);
             var secondPosition = pos(1, 0);
             world.updateAnt(anAnt);
@@ -183,19 +183,19 @@ function pos(x, y){
 }
 
 function fieldWithAnts(ants) {
-    var field = emptyField()
-    field.ants = ants
+    var field = emptyField();
+    field.ants = ants;
     return field;
 }
 
 function fieldWithAnt(ant) {
-    var field = emptyField()
-    field.ants.push(ant)
+    var field = emptyField();
+    field.ants.push(ant);
     return field;
 }
 
 function createFieldWithFood(food) {
-    var field = emptyField()
+    var field = emptyField();
     field.food = food;
     return field;
 }
