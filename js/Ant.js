@@ -4,28 +4,25 @@ var offsets = [
     [ 1, -1],[ 1, 0],[ 1, 1]]
 
 function Position(x, y){
-    this.x = x
-    this.y = y
+    this.x = x;
+    this.y = y;
 
-    /*
-    this.neighbours = function () {
-        return _.map(offsets, function (offset) {
-            return new Position(x + offset[0], y + offset[1])
-        })
-    }
-    this.randomNeighbour = function(){
-        var neighbours = this.neighbours();
-        var randomIndex = Math.floor(Math.random() * (neighbours.length)) - 1;
-        return neighbours[randomIndex];
-    }
-
-    this.toString = function(){
-        return "[" + x + "," + y + "]"
-    }
-*/
 
 }
 
+Position.prototype.neighbours = function () {
+    var x = this.x;
+    var y = this.y;
+    return _.map(offsets, function (offset) {
+        return new Position(x + offset[0], y + offset[1])
+    })
+}
+
+Position.prototype.randomNeighbour = function(){
+    var neighbours = this.neighbours();
+    var randomIndex = Math.floor(Math.random() * (neighbours.length)) - 1;
+    return neighbours[randomIndex];
+}
 
 function Ant(home){
     this.position = home

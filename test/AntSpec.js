@@ -4,8 +4,8 @@ describe("Position", function () {
         Math.random = function () {
             return 1;
         };
-        var randomNeighbour = new Position(1,1);
-        var position = new Position(0,0);
+        var randomNeighbour = pos(1,1);
+        var position = pos(0,0);
         position.neighbours = function(){
             return [ aPosition(), randomNeighbour ]
         }
@@ -13,11 +13,11 @@ describe("Position", function () {
     });
 
     it('is equal to position with same coordinates', function () {
-        expect(_.isEqual(pos(1,1)), pos(1,1)).toBe(true)
+        expect(_.isEqual(pos(1,1), pos(1,1))).toEqual(true);
     });
 
     it('returns all neighbours', function () {
-        var position = new Position(3, 3);
+        var position = pos(3, 3);
         var expectedNeighbours = [
             pos(2, 2), pos(2, 3), pos(2, 4),
             pos(3, 2),            pos(3, 4),
@@ -31,7 +31,7 @@ describe("Position", function () {
 
 describe("Ant searching for food", function () {
     beforeEach(function () {
-        home = new Position()
+        home = pos()
         ant = new Ant(home)
     });
 
@@ -52,7 +52,7 @@ a       }
 });
 
 function aPosition(){
-    return new Position(1,2);
+    return pos(1,2);
 }
 
 function pos(x, y){
