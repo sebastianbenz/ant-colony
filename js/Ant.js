@@ -2,10 +2,19 @@ var WIDTH  = 30;
 var HEIGHT = 30;
 
 var offsets = [
-
     [-1, -1],[-1, 0],[-1, 1],
     [ 0, -1],        [ 0, 1],
-    [ 1, -1],[ 1, 0],[ 1, 1]]
+    [ 1, -1],[ 1, 0],[ 1, 1]
+]
+
+function Field(){
+    this.ants = [];
+    this.food = 0;
+}
+
+Field.prototype.takeFood = function () {
+    this.food--;
+}
 
 function Position(x, y){
     this.x = x;
@@ -23,27 +32,50 @@ Position.prototype.neighbours = function () {
     });
 }
 
+
+
 Position.prototype.randomNeighbour = function(){
-    var neighbours = this.neighbours();
-    var randomIndex = Math.floor(Math.random() * (neighbours.length - 1)) ;
-    return neighbours[randomIndex];
+    return _.sample(this.neighbours());
 }
 
 
 function Ant(home){
     this.position = home
-    this.searching = function(){
-        this.position = this.position.randomNeighbour();
-    };
-    this.goingToFood = function(){
-        this.position = this.position.nextTo(this.positionWithFood);
-    }
-    this.move = this.searching
-
+    this.home = home
+    this.move = this.searching;
+    this.update = this.inspectField;
 }
 
-Ant.prototype.askAboutFood = function(ants){
-    var antsKnowingAboutFood = _.filter(ants, function (ant) {
+Ant.prototype.searching = function(){
+    this.updatePosition(this.position.randomNeighbour());
+};
+
+Ant.prototype.goingToFood = function(){
+    this.updatePosition(this.position.nextTo(this.positionWithFood));
+}
+
+Ant.prototype.inspectField = function(field){
+    this.checkFieldForFood(field);
+    this.askAboutFood(field);
+}
+
+Ant.prototype.updatePosition = function (next) {
+    this.previousPosition = this.position;
+    this.position = next;
+};
+
+Ant.prototype.takeFoodHome = function(){
+  this.updatePosition(this.position.nextTo(this.home));
+}
+Ant.prototype.checkFieldForFood = function(field){
+    if(field.food === 0){
+        return;
+    }
+    field.takeFood();
+    this.move = this.takeFoodHome;
+}
+Ant.prototype.askAboutFood = function(field){
+    var antsKnowingAboutFood = _.filter(field.ants, function (ant) {
         return ant.positionWithFood !== undefined;
     });
     if(antsKnowingAboutFood.length === 0){
@@ -56,11 +88,48 @@ Ant.prototype.askAboutFood = function(ants){
 
 Position.prototype.nextTo = function (dest) {
     return new Position(
-       Math.sign(dest.x-this.x),
-       Math.sign(dest.y-this.y)
+       this.x + Math.sign(dest.x-this.x),
+       this.y  +Math.sign(dest.y-this.y)
     );
 
+};
+
+function Simulator(ants, food) {
+    this.ants = ants;
+    this.food = food;
+};
+
+Simulator.prototype.step = function () {
+    _.each(ants, move);
+};
+
+function World(){
+    this.fields = []
 }
 
-
+World.prototype.field = function(position){
+    if(position === undefined){
+        return undefined;
+    }
+    var key = position.x + "_" + position.y
+    var field =  this.fields[key]
+    if(field === undefined) {
+        field = new Field();
+        this.fields[key] = field;
+    }
+    return field;
+}
+World.prototype.putFood = function(position){
+    this.field(position).food++;
+}
+World.prototype.updateAnt = function(ant){
+    if(ant.previousPosition !== undefined){
+        var ants = this.field(ant.previousPosition).ants;
+        var index = ants.indexOf(ant);
+        if(index > -1){
+            this.field(ant.previousPosition).ants.splice(index, 1);
+        }
+    }
+    this.field(ant.position).ants.push(ant);
+}
 

@@ -1,29 +1,10 @@
 describe("Position", function () {
 
     describe('randomNeighbour', function(){
-
-        beforeEach(function(){
-            firstNeighbour = pos(1,1);
-            secondNeighbour = pos(2,2);
-            position = pos(0,0);
-            position.neighbours = function(){
-                return [firstNeighbour, secondNeighbour]
-            }
-        })
-
         it('returns last random neighbour', function () {
-            Math.random = function () {
-                return 1;
-            };
-            expect(position.randomNeighbour()).toBe(secondNeighbour);
+            position = pos(0,0);
+            expect(position.neighbours()).toContain(position.randomNeighbour());
         });
-        it('returns first random neighbour', function () {
-            Math.random = function () {
-                return 0;
-            };
-            expect(position.randomNeighbour()).toBe(firstNeighbour);
-        });
-
     });
 
     it('is equal to position with same coordinates', function () {
@@ -78,7 +59,6 @@ describe("Ant searching for food", function () {
 
     it('starts at home', function () {
         expect(ant.position).toBe(home)
-
     });
     it('moves to random position', function () {
         var randomNeighbour = aPosition();
@@ -87,6 +67,12 @@ describe("Ant searching for food", function () {
 a       }
         ant.move()
         expect(ant.position).toBe(randomNeighbour)
+    });
+    it('stores previous position', function () {
+        var startPosition = aPosition();
+        ant.position = startPosition;
+        ant.move()
+        expect(ant.previousPosition).toBe(startPosition);
     });
     it('asks for food on every position', function () {
         var positionWithoutFood = aPosition()
@@ -97,20 +83,87 @@ a       }
         positionWithoutFood.nextTo = function(){
             return positionWithFood;
         }
-        antSearchingForFood.askAboutFood([antKnowingAboutFood])
-        antSearchingForFood.move()
+        antSearchingForFood.update(fieldWithAnt(antKnowingAboutFood));
+        antSearchingForFood.move();
         expect(antSearchingForFood.position).toEqual(positionWithFood)
     });
 
-    it('returns home after finding food', function () {
-        var home = pos(0,0)
-        var foodLocation = pos(1,1)
-        var anyAnt = new Ant(home);
-        anyAnt.position = foodLocation;
-        anyAnt.foundFood(field)
-        anyAnt.move();
-        expect(anyAnt.position).toEqual(home);
-    })
+    describe('finding food', function () {
+        it('returns home', function () {
+            var home = pos(0,0)
+            var anyAnt = new Ant(home);
+            anyAnt.position = pos(1,1)
+            anyAnt.update(createFieldWithFood(1))
+            anyAnt.move();
+            expect(anyAnt.position).toEqual(home);
+        });
+        it('updates field', function () {
+            var anyAnt = new Ant();
+            var fieldWithFood =  createFieldWithFood(1);
+            anyAnt.update(fieldWithFood);
+            expect(fieldWithFood.food).toBe(0);
+        });
+    });
+
+    describe('simulator', function () {
+        describe('update', function () {
+            it("passes field with food to ant", function () {
+                var position = aPosition();
+                var ant = anAnt();
+                spyOn(ant, 'update');
+
+                var Simulator = function(world){
+                    this.world = world;
+                }
+
+
+            });
+
+
+        });
+
+    });
+
+    describe("World", function(){
+
+        beforeEach(function () {
+            world = new World
+        });
+
+        it("Stores food", function () {
+            var position = pos(0, 0);
+            expect(world.field(position)).toEqual(emptyField())
+            world.putFood(position);
+            expect(world.field(position)).toEqual(createFieldWithFood(1))
+            world.putFood(position);
+            expect(world.field(position)).toEqual(createFieldWithFood(2))
+
+        });
+        it("Stores ants", function () {
+            var position = pos(0, 0);
+            expect(world.field(position)).toEqual(emptyField());
+            var anAnt = antOnPosition(position)
+            world.updateAnt(anAnt);
+            expect(world.field(position)).toEqual(fieldWithAnt(anAnt));
+            var anotherAnt = antOnPosition(position)
+            world.updateAnt(anotherAnt);
+            expect(world.field(position)).toEqual(fieldWithAnts(
+                [anAnt, anotherAnt]));
+
+        });
+
+        it("Updates ants", function () {
+            var firstPosition = pos(0, 0);
+            var anAnt = antOnPosition(firstPosition)
+            //console.log(anAnt.previousPosition);
+            var secondPosition = pos(1, 0);
+            world.updateAnt(anAnt);
+            anAnt.updatePosition(secondPosition);
+            world.updateAnt(anAnt);
+            expect(world.field(firstPosition).ants).toEqual([]);
+        });
+
+    });
 });
 
 function anAnt(positionWithFood){
@@ -127,3 +180,29 @@ function pos(x, y){
     return new Position(x, y);
 }
 
+function fieldWithAnts(ants) {
+    var field = emptyField()
+    field.ants = ants
+    return field;
+}
+
+function fieldWithAnt(ant) {
+    var field = emptyField()
+    field.ants.push(ant)
+    return field;
+}
+
+function createFieldWithFood(food) {
+    var field = emptyField()
+    field.food = food;
+    return field;
+}
+function antOnPosition(position) {
+    var ant = new Ant(pos(-1, -1));
+    ant.position = position;
+    return ant;
+}
+
+function emptyField() {
+    return new Field()
+}
