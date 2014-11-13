@@ -45,7 +45,7 @@ function draw(ctx, world, ants) {
     var render = function () {
         _.each(ants, function (ant) {
             ant.move();
-            world.updateAnt(ant);
+            world.moveAnt(ant);
             if (shouldDrawAnt(ant.position) && shouldDrawAnt(ant.previousPosition)){
                 moveAnt(ctx, ant.previousPosition, ant.position);
             }

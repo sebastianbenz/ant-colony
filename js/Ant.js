@@ -16,6 +16,10 @@ Field.prototype.takeFood = function () {
     this.food--;
 };
 
+Field.prototype.empty = function () {
+    this.food == 0 && this.ants.length === 0;
+};
+
 function Position(x, y){
     this.x = x;
     this.y = y;
@@ -51,6 +55,14 @@ Ant.prototype.goingToFood = function(){
     this.updatePosition(this.position.nextTo(this.positionWithFood));
 };
 
+Ant.prototype.takeFoodHome = function(){
+    this.updatePosition(this.position.nextTo(this.home));
+    if(_.isEqual(this.position, this.home)){
+        console.log("Brought food home, going to food again");
+        this.move = this.goingToFood;
+    }
+};
+
 Ant.prototype.inspectField = function(field){
     this.checkFieldForFood(field);
     if(!this.positionWithFood){
@@ -63,14 +75,6 @@ Ant.prototype.updatePosition = function (next) {
     this.position = next;
 };
 
-Ant.prototype.takeFoodHome = function(){
-    this.updatePosition(this.position.nextTo(this.home));
-    if(_.isEqual(this.position, this.home)){
-        console.log("Brought food home, going to food again");
-        this.move = this.goingToFood;
-    }
-
-};
 Ant.prototype.checkFieldForFood = function(field){
     if(field.food === 0){
         if(_.isEqual(this.position, this.positionWithFood)){
@@ -85,6 +89,7 @@ Ant.prototype.checkFieldForFood = function(field){
     this.positionWithFood = this.position;
     this.move = this.takeFoodHome;
 };
+
 Ant.prototype.askAboutFood = function(field){
     var antsKnowingAboutFood = _.filter(field.ants, function (ant) {
         return ant.positionWithFood;
@@ -98,12 +103,11 @@ Ant.prototype.askAboutFood = function(field){
     this.move = this.goingToFood
 };
 
-Position.prototype.nextTo = function (dest) {
+Position.prototype.nextTo = function(dest) {
     return new Position(
        this.x + Math.sign(dest.x-this.x),
        this.y + Math.sign(dest.y-this.y)
     );
-
 };
 
 function World(){
@@ -122,19 +126,29 @@ World.prototype.field = function(position){
     }
     return field;
 };
+
 World.prototype.putFood = function(position){
     console.log("Food: " + position.x + "," + position.y);
     this.field(position).food++;
 };
-World.prototype.updateAnt = function(ant){
+
+World.prototype.moveAnt = function(ant){
     var field = this.field(ant.previousPosition);
     if(field){
-        var ants = field.ants;
-        var index = ants.indexOf(ant);
-        if(index > -1){
-            field.ants.splice(index, 1);
+        remove(field.ants, ant);
+        if(field.empty()){
+            console.log("cleaning field");
+            remove(this.fields, field);
         }
+
     }
     this.field(ant.position).ants.push(ant);
 };
+
+function remove(list, item){
+    var index = list.indexOf(item);
+    if(index > -1){
+        list.splice(index, 1);
+    }
+}
 
