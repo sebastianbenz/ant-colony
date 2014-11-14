@@ -44,15 +44,18 @@ Position.prototype.toString = function(){
     return "[" + this.x + "," + this.y + "]";
 };
 
-function Ant(home){
+function Ant(home, world){
     this.position = home;
     this.home = home;
     this.movingStrategy = this.searching;
+    this.world = world;
 }
 
 Ant.prototype.move = function () {
     var newPosition = this.movingStrategy();
     this.updatePosition(newPosition);
+    this.world.moveAnt(this);
+
 };
 
 Ant.prototype.searching = function(){
