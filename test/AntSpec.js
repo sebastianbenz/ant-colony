@@ -86,7 +86,7 @@ describe("Ant", function () {
         });
     });
 
-    describe('move update the world', function () {
+    describe('moving updates the world', function () {
 
         beforeEach(function () {
            world = new World();
