@@ -114,18 +114,19 @@ describe("Ant", function () {
             anyAnt.position = food;
             anyAnt.update(createFieldWithFood(1));
             anyAnt.move(); // back home
+            anyAnt.update(emptyField());
             anyAnt.move(); // back to food
             expect(anyAnt.position).toEqual(food);
         });
         it('starts searching again if no food is left', function () {
             var food = pos(1,1);
             var anyAnt = antOnPosition(food);
-            anyAnt.move = anyAnt.goingToFood;
+            anyAnt.movingStrategy = anyAnt.goingToFood;
             anyAnt.positionWithFood = food;
             anyAnt.move();
             anyAnt.position = food;
             anyAnt.update(emptyField());
-            expect(anyAnt.move).toBe(anyAnt.searching);
+            expect(anyAnt.movingStrategy).toBe(anyAnt.searching);
             anyAnt.move();
             expect(anyAnt.position).not.toBe(food);
         })
