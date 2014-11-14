@@ -55,12 +55,8 @@ Ant.prototype.searching = function(){
     this.updatePosition(this.position.randomNeighbour());
 };
 
-Ant.prototype.goingToFood = function(){
-    var nextPosition = this.position.nextTo(this.positionWithFood);
-    this.updatePosition(nextPosition);
-    if (_.isEqual(this.previousPosition, this.position)) {
-        console.log("Move Stuck: " + this.positionWithFood + " " + this.previousPosition + " " + this.position);
-    }
+Ant.prototype.goingToFood = function () {
+    this.updatePosition(this.position.nextTo(this.positionWithFood));
 };
 
 Ant.prototype.takeFoodHome = function(){
@@ -111,10 +107,15 @@ Ant.prototype.askAboutFood = function(field){
 
 Position.prototype.nextTo = function(dest) {
     return new Position(
-       this.x + Math.sign(dest.x-this.x),
-       this.y + Math.sign(dest.y-this.y)
+       this.x + sign(dest.x-this.x),
+       this.y + sign(dest.y-this.y)
     );
 };
+
+
+function sign(number){
+    return number < 0 ? -1 : number > 0 ? 1 : 0
+}
 
 function World(){
     this.fields = []
@@ -141,9 +142,11 @@ World.prototype.moveAnt = function(ant){
     var field = this.field(ant.previousPosition);
     if(field){
         remove(field.ants, ant);
+        /*
         if(field.empty()){
             remove(this.fields, field);
         }
+         */
     }
     this.field(ant.position).ants.push(ant);
 };

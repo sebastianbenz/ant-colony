@@ -9,7 +9,7 @@ function coordinate(value){
 function drawAnt(ctx, position){
     var x = coordinate(position.x);
     var y = coordinate(position.y);
-    ctx.fillStyle = "grey";
+    ctx.fillStyle = "black";
     ctx.beginPath();
     ctx.arc(x + 5, y + 5, 5, 0, Math.PI*2);
     ctx.closePath();
