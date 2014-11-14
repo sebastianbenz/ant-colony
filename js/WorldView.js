@@ -46,11 +46,10 @@ function draw(ctx, world, ants) {
     })();
     var render = function () {
         _.each(ants, function (ant) {
-            ant.move();
-            world.moveAnt(ant);
-            if (shouldDrawAnt(ant.previousPosition)){
-                removeAnt(ctx, ant.previousPosition);
+            if (shouldDrawAnt(ant.position)){
+                removeAnt(ctx, ant.position);
             }
+            ant.move();
             if (shouldDrawAnt(ant.position)){
                 drawAnt(ctx, ant.position);
             }
@@ -95,11 +94,11 @@ canvas.addEventListener('click', onCanvasClick, false);
 var home = new Position(WIDTH / 2  , HEIGHT / 2);
 drawHome(ctx, home);
 
-var ants = _.range(ANT_COUNT).map(function () {
-    return new Ant(home);
-});
 
 var world = new World();
+var ants = _.range(ANT_COUNT).map(function () {
+    return new Ant(home, world);
+});
 draw(ctx, world, ants);
 
 

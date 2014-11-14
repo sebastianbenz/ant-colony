@@ -54,8 +54,6 @@ function Ant(home, world){
 Ant.prototype.move = function () {
     var newPosition = this.movingStrategy();
     this.updatePosition(newPosition);
-    this.world.moveAnt(this);
-
 };
 
 Ant.prototype.searching = function(){
@@ -82,8 +80,9 @@ Ant.prototype.update = function(field){
 };
 
 Ant.prototype.updatePosition = function (next) {
-    this.previousPosition = this.position;
+    this.world.removeAnt(this);
     this.position = next;
+    this.world.putAnt(this);
 };
 
 Ant.prototype.checkFieldForFood = function(field){
@@ -145,13 +144,17 @@ World.prototype.putFood = function(position){
     this.field(position).food++;
 };
 
-World.prototype.moveAnt = function(ant){
-    var field = this.field(ant.previousPosition);
+
+World.prototype.removeAnt = function(ant) {
+    var field = this.field(ant.position);
     if(field){
         remove(field.ants, ant);
     }
+}
+
+World.prototype.putAnt = function(ant) {
     this.field(ant.position).ants.push(ant);
-};
+}
 
 function remove(list, item){
     var index = list.indexOf(item);
