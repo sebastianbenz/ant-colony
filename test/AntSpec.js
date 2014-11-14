@@ -119,11 +119,15 @@ describe("Ant", function () {
         });
         it('starts searching again if no food is left', function () {
             var food = pos(1,1);
-            anyAnt = antOnPosition(food);
+            var anyAnt = antOnPosition(food);
             anyAnt.move = anyAnt.goingToFood;
             anyAnt.positionWithFood = food;
+            anyAnt.move();
+            anyAnt.position = food;
             anyAnt.update(emptyField());
             expect(anyAnt.move).toBe(anyAnt.searching);
+            anyAnt.move();
+            expect(anyAnt.position).not.toBe(food);
         })
     });
 

@@ -1,6 +1,6 @@
 var OFFSET  = 10;
 var ANT_COUNT = 1000;
-var FOOD_COUNT = 50;
+var FOOD_COUNT = 500;
 
 function coordinate(value){
     return value * OFFSET
